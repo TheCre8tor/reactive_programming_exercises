@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:who_to_follow/modules/user/domain/entities/user.dart';
-import 'package:who_to_follow/modules/user/repositories/user_repository.error.dart';
 import 'package:who_to_follow/modules/user/services/http/user_service.interface.dart';
 import 'package:http/http.dart';
+import 'package:who_to_follow/shared/core/errors/server_exception.dart';
 
 @immutable
 class UserService implements BaseUserService {
@@ -28,6 +28,6 @@ class UserService implements BaseUserService {
       return users;
     }
 
-    throw UserRepositoryException(response.body);
+    throw ServerException(response.body);
   }
 }
