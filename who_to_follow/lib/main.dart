@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:who_to_follow/modules/users/repositories/users_repository.dart';
 import 'package:who_to_follow/modules/users/services/http/user_service.dart';
 
 void main() {
@@ -71,9 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void callAsync() async {
-    final hu = UserService(client: Client());
+    final hu = UsersRepository(UserService(client: Client()));
     final users = await hu.getUsers();
-    print(users.ok().unwrap());
+    print(users.err().unwrap());
   }
 
   @override
