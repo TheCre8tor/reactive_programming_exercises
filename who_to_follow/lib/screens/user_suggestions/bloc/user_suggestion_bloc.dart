@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:ruqe/ruqe.dart';
 import 'package:rxdart/rxdart.dart';
@@ -7,9 +9,8 @@ import 'package:who_to_follow/shared/core/usecases/usecases.dart';
 
 @immutable
 class UserSuggestionBloc implements Bloc {
-  final Usecases<Iterable<User>, None> _usecase;
-  final Stream<List<User>> users;
-  final Sink<None> getUsers;
+  final Stream<Iterable<User>> users;
+  final StreamSink<void> getUsers;
 
   @override
   void dispose() {
@@ -17,16 +18,32 @@ class UserSuggestionBloc implements Bloc {
   }
 
   const UserSuggestionBloc._({
-    required Usecases<Iterable<User>, None> usecase,
     required this.users,
     required this.getUsers,
-  }) : _usecase = usecase;
+  });
 
   factory UserSuggestionBloc({
     required Usecases<Iterable<User>, None> usecase,
   }) {
-    final controller = BehaviorSubject.seeded(const <User>[]);
+    final controller = BehaviorSubject();
 
-    final Stream<List<User>> users = controller.stream.distinct().switchMap((value) => null)
+    final Stream<Iterable<User>> users =
+        controller.stream.distinct().switchMap((_) {
+      return Rx.fromCallable(() async {
+        final response = await usecase(const None());
+
+        if (response.isOk()) {
+          return response.ok().unwrap();
+        } else {
+          controller.addError(response.err().unwrap());
+          return [];
+        }
+      });
+    });
+
+    return UserSuggestionBloc._(
+      users: users,
+      getUsers: controller.sink,
+    );
   }
 }
