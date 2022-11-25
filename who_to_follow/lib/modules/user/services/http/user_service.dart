@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:who_to_follow/modules/users/domain/entities/user.dart';
-import 'package:who_to_follow/modules/users/repositories/user_repository.error.dart';
-import 'package:who_to_follow/modules/users/services/http/user_service.interface.dart';
+import 'package:who_to_follow/modules/user/domain/entities/user.dart';
+import 'package:who_to_follow/modules/user/repositories/user_repository.error.dart';
+import 'package:who_to_follow/modules/user/services/http/user_service.interface.dart';
 import 'package:http/http.dart';
 
 @immutable
-class UserService implements BaseUsersService {
+class UserService implements BaseUserService {
   final Client client;
 
   const UserService({required this.client});
@@ -15,7 +15,7 @@ class UserService implements BaseUsersService {
   @override
   Future<Iterable<User>> getUsers() async {
     final response = await client.get(
-      Uri.parse("https://api.github.com/usersx"),
+      Uri.parse("https://api.github.com/users"),
     );
 
     if (response.statusCode == 200) {
@@ -28,6 +28,6 @@ class UserService implements BaseUsersService {
       return users;
     }
 
-    throw UserRepositoryError(response.body);
+    throw UserRepositoryException(response.body);
   }
 }

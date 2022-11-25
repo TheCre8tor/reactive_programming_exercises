@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserRepositoryError extends Equatable implements Exception {
+class ServerException extends Equatable implements Exception {
   final String? message;
 
-  UserRepositoryError([String? error])
+  ServerException([String? error])
       : message = jsonDecode(error ?? "")["message"];
 
   @override
