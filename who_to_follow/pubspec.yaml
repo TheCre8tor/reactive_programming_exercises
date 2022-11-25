@@ -15,6 +15,7 @@ dependencies:
   ruqe: ^1.1.0
   equatable: ^2.0.5
   rxdart: ^0.27.7
+  kiwi: ^4.0.3
 
 dev_dependencies:
   flutter_test:

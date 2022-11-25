@@ -5,7 +5,13 @@ import 'package:who_to_follow/modules/user/services/http/user_service.dart';
 import 'package:who_to_follow/modules/user/usecases/get_users.dart';
 import 'package:who_to_follow/screens/user_suggestions/bloc/user_suggestion_bloc.dart';
 
-void main() {
+import 'dependency_injection.dart' as dependency_injection;
+import 'dependency_injection.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dependency_injection.init();
+
   runApp(const MyApp());
 }
 
@@ -40,15 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    bloc = UserSuggestionBloc(
-      usecase: GetUsers(
-        repository: UserRepository(
-          service: UserService(
-            client: Client(),
-          ),
-        ),
-      ),
-    );
+    bloc = kiwiContainer<UserSuggestionBloc>();
   }
 
   @override
@@ -71,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               stream: bloc.users,
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
-                  print(snapshot.data?.length);
+                  print(snapshot.data);
                 }
 
                 if (snapshot.hasError) {
