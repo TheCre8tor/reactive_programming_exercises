@@ -13,9 +13,9 @@ class UserService implements BaseUserService {
   const UserService({required this.client});
 
   @override
-  Future<Iterable<User>> getUsers() async {
+  Future<Iterable<User>> getUsers([int? since]) async {
     final response = await client.get(
-      Uri.parse("https://api.github.com/users"),
+      Uri.parse("https://api.github.com/users?since=${since ?? 0}"),
     );
 
     if (response.statusCode == 200) {

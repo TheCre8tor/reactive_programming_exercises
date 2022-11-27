@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ruqe/ruqe.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:who_to_follow/screens/user_suggestions/bloc/user_suggestion_bloc.dart';
+import 'package:who_to_follow/shared/core/bloc/bloc_provider.dart';
 
 import 'dependency_injection.dart' as dependency_injection;
 import 'dependency_injection.dart';
@@ -22,66 +25,48 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BlocProvider(
+        bloc: kiwiContainer<UserSuggestionBloc>(),
+        child: const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  late final UserSuggestionBloc bloc;
-
-  @override
-  void initState() {
-    super.initState();
-    bloc = kiwiContainer<UserSuggestionBloc>();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    bloc.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<UserSuggestionBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder(
-              stream: bloc.users,
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data);
-                }
-
-                if (snapshot.hasError) {
-                  print("Error state: ${snapshot.error}");
-                }
-
-                return const Text("data");
-              }),
+            Column(
+              children: [
+                const Text("Who to follow"),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text("Refresh"),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text("View All"),
+                    ),
+                  ],
+                )
+              ],
             ),
-            const SizedBox(height: 30),
-            TextButton(
-              onPressed: () {
-                bloc.getUsers.add(null);
-              },
-              child: const Text("Press Button"),
-            )
           ],
         ),
       ),

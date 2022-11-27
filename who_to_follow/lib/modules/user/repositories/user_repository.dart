@@ -11,11 +11,14 @@ class UserRepository implements BaseUserRepository {
       : _userService = service;
 
   @override
-  Future<Result<Iterable<User>, String>> getUsers() async {
+  Future<Result<Iterable<User>, String>> getUsers(Option since) async {
     const message = "[error]: unable to get users, try again later!";
 
     try {
-      final response = await _userService.getUsers();
+      final response = since is None
+          ? await _userService.getUsers()
+          : await _userService.getUsers(since.unwrap());
+
       return Ok(response);
     } on ServerException catch (err) {
       return Err(err.message ?? message);
