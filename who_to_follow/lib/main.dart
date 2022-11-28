@@ -42,6 +42,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<UserSuggestionBloc>(context);
 
+    bloc.refreshedUsers.add(const None());
+    bloc.closeUser1.add(const None());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -73,7 +76,17 @@ class MyHomePage extends StatelessWidget {
                     if (snapshot.hasData) {
                       return Row(
                         children: [
-                          Image.network(snapshot.data!.avatarUrl),
+                          Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Image.network(
+                              snapshot.data!.avatarUrl,
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
                         ],
                       );
                     }
