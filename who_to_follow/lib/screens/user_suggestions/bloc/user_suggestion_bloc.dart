@@ -21,11 +21,11 @@ class UserSuggestionBloc implements Bloc {
   final StreamSink<None> closeUser3;
 
   @override
-  void dispose() {
-    refreshedUsers.close();
-    closeUser1.close();
-    closeUser2.close();
-    closeUser3.close();
+  void dispose() async {
+    await refreshedUsers.close();
+    await closeUser1.close();
+    await closeUser2.close();
+    await closeUser3.close();
   }
 
   const UserSuggestionBloc._({
