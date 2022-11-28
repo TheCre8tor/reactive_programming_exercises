@@ -56,7 +56,9 @@ class MyHomePage extends StatelessWidget {
                 Row(
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        bloc.refreshedUsers.add(const None());
+                      },
                       child: const Text("Refresh"),
                     ),
                     TextButton(
@@ -64,6 +66,30 @@ class MyHomePage extends StatelessWidget {
                       child: const Text("View All"),
                     ),
                   ],
+                ),
+                StreamBuilder(
+                  stream: bloc.user1,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          Image.network(snapshot.data!.avatarUrl),
+                        ],
+                      );
+                    }
+
+                    return Column(
+                      children: [
+                        const CircularProgressIndicator(),
+                        TextButton(
+                          onPressed: () {
+                            bloc.closeUser1.add(const None());
+                          },
+                          child: const Text("Fetch"),
+                        )
+                      ],
+                    );
+                  },
                 )
               ],
             ),
