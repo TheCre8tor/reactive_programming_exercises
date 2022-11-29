@@ -99,7 +99,7 @@ class UserSuggestionBloc implements Bloc {
     Stream<Iterable<User>> refreshStream,
   ) {
     return suggestion1Stream.stream.switchMap((_) {
-      requestOnRefreshStream.sink.add(const None());
+      // requestOnRefreshStream.sink.add(const None());
 
       return Rx.combineLatest([refreshStream], (values) {
         final listUsers = values[0] as List<User>;
