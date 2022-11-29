@@ -3,7 +3,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:who_to_follow/modules/user/repositories/user_repository.dart';
 import 'package:who_to_follow/modules/user/services/http/user_service.dart';
 import 'package:who_to_follow/modules/user/usecases/get_users.dart';
-import 'package:who_to_follow/screens/user_suggestions/bloc/user_suggestion_bloc.dart';
+import 'package:who_to_follow/screens/user_suggestion/bloc/user_suggestion_bloc.dart';
 
 final kiwiContainer = KiwiContainer();
 
